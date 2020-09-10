@@ -22,8 +22,8 @@ pub fn read_user_input() -> std::result::Result<u32, std::num::ParseIntError> {
     return action.trim().parse::<u32>();
 }
 
-const STANDARD_SCENES_PATH: &str = "./src/standard_scenes.json";
-const BATTLE_SCENES_PATH: &str = "./src/battle_scenes.json";
+const STANDARD_SCENES_PATH: &str = "./assets/standard_scenes.json";
+const BATTLE_SCENES_PATH: &str = "./assets/battle_scenes.json";
 
 fn load_json<T: DeserializeOwned>(path: &str) -> Vec<T> {
     let file = File::open(path).expect(&format!("Unable to find {} file.", path));
