@@ -1,46 +1,42 @@
-use scenes::BattleResult;
+use io::AsyncReadExt;
+use std::io::BufRead;
+use std::process;
+use tokio::io::{self, AsyncWriteExt};
+use tokio::net::TcpStream;
 
-mod scenes;
-mod utils;
+#[tokio::main]
+async fn main() -> io::Result<()> {
+    let stream = TcpStream::connect("127.0.0.1:5000").await?;
+    let stdin = std::io::stdin();
+    let (mut rd, mut wr) = io::split(stream);
 
-fn game_loop() {
-    let battle_scenes = utils::get_battle_scenes();
-    let scenes = utils::get_scenes();
-
-    let mut current_scene = scenes.get("coast").expect("There is no first scene.");
-    loop {
-        match battle_scenes.get(&current_scene.scene_id) {
-            Some(battle_scene) => {
-                match battle_scene.play() {
-                    BattleResult::Win => (), // noop
-                    BattleResult::Loss => break,
-                    BattleResult::Run => {
-                        println!(
-                            "You run away like a little girl, so you have to start over again."
-                        );
-                        current_scene = scenes.get("coast").expect("There is no first scene.");
-                        continue;
-                    }
+    // thread for recieving messages from the server
+    let handle = tokio::spawn(async move {
+        loop {
+            let mut buf = vec![0; 1024];
+            match rd.read(&mut buf).await {
+                Ok(0) => {
+                    // Shutdown here
+                    process::exit(0);
+                }
+                Ok(_n) => {
+                    println!("<- Recieved message\n{}", String::from_utf8(buf).unwrap());
+                }
+                Err(_) => {
+                    println!("Sent error");
                 }
             }
-            None => (), // current scene has no battle scene prerequisition -> noop
         }
+    });
 
-        match current_scene.play() {
-            Some(scene_id) => {
-                current_scene = scenes.get(&scene_id).expect("This should never happen :)")
-            }
-            None => break,
-        }
+    // Loop for reading the input
+    for line in stdin.lock().lines() {
+        let line = line.unwrap();
+        println!("-> Sending {} chars", line.len());
+        wr.write_all(line.as_bytes()).await.unwrap();
     }
 
-    if current_scene.win {
-        utils::print_game_win();
-    } else {
-        utils::print_game_over();
-    }
-}
+    handle.await?;
 
-fn main() {
-    game_loop();
+    Ok(())
 }
