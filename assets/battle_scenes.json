@@ -1,0 +1,12 @@
+[
+  {
+    "scene_id": "mountains",
+    "enemy": "bear",
+    "hp": 100
+  },
+  {
+    "scene_id": "town",
+    "enemy": "wolf",
+    "hp": 30
+  }
+]
