@@ -20,7 +20,7 @@ async fn main() -> io::Result<()> {
                     process::exit(0);
                 }
                 Ok(_n) => {
-                    println!("<- Recieved message\n{}", String::from_utf8(buf).unwrap());
+                    println!("{}", String::from_utf8(buf).unwrap());
                 }
                 Err(_) => {
                     println!("Sent error");
@@ -32,7 +32,7 @@ async fn main() -> io::Result<()> {
     // Loop for reading the input
     for line in stdin.lock().lines() {
         let line = line.unwrap();
-        println!("-> Sending {} chars", line.len());
+        // println!("-> Sending {} chars", line.len());
         wr.write_all(line.as_bytes()).await.unwrap();
     }
 
