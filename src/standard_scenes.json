@@ -1,0 +1,75 @@
+[
+  {
+    "scene_id": "coast",
+    "text": "Hello crusader, you've woke up at the sea coast, where would you like to go?",
+    "options": [
+      {
+        "scene_id": "mountains",
+        "text": "To the mountains"
+      },
+      {
+        "scene_id": "town",
+        "text": "To the town"
+      },
+      {
+        "scene_id": "cave",
+        "text": "To the cave"
+      }
+    ],
+    "end": false,
+    "win": false
+  },
+  {
+    "scene_id": "mountains",
+    "text": "Uhh it's freezing in here, better go back.",
+    "options": [
+      {
+        "scene_id": "coast",
+        "text": "Back to the sea coast"
+      },
+      {
+        "scene_id": "mountains-game-over",
+        "text": "Continue"
+      }
+    ],
+    "end": false,
+    "win": false
+  },
+  {
+    "scene_id": "mountains-game-over",
+    "text": "You kept continuing and froze to death, I told you to go back.",
+    "options": [],
+    "end": true,
+    "win": false
+  },
+  {
+    "scene_id": "cave",
+    "text": "Wild cheetah appeared. As you know, it's the fastest land animal in the world (110 - 120 km/h according to wiki), so basically you are dead.",
+    "options": [],
+    "end": true,
+    "win": false
+  },
+  {
+    "scene_id": "town",
+    "text": "You are in the town and see the pub. Where would you like to go now?",
+    "options": [
+      {
+        "scene_id": "coast",
+        "text": "Back to the sea coast"
+      },
+      {
+        "scene_id": "pub",
+        "text": "To the pub"
+      }
+    ],
+    "end": false,
+    "win": false
+  },
+  {
+    "scene_id": "pub",
+    "text": "You went to pub, had a beer and that pretty much all, I don't want to create another levels.",
+    "options": [],
+    "end": true,
+    "win": true
+  }
+]
